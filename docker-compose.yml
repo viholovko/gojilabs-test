@@ -1,0 +1,31 @@
+version: '3.3'
+
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ".:/app"
+    depends_on:
+      - db
+      - redis
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: gojilab_test_development
+      REDIS_URL: redis://redis:6379/1  
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: gojilab_test_development
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  redis:
+    image: redis:7.2    
+
+volumes:
+  db_data:
